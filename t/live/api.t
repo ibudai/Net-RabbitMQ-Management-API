@@ -847,13 +847,13 @@ SKIP: {
 SKIP: {
     skip 'Set TEST_LIVE to true to run these tests', 1 unless $ENV{TEST_LIVE};
 
-    throws_ok { $a->get_vhost_aliveness_test } qr{Missing key in parameters: vhost}, 'Missing parameter vhost';
+    throws_ok { $a->vhost_aliveness_test } qr{Missing key in parameters: vhost}, 'Missing parameter vhost';
 }
 
 SKIP: {
     skip 'Set TEST_LIVE to true to run these tests', 1 unless $ENV{TEST_LIVE};
 
-    my $r = $a->get_vhost_aliveness_test( vhost => '%2f' );
+    my $r = $a->vhost_aliveness_test( vhost => '%2f' );
 
     if ( $r->success ) {
         isa_ok $r->response, 'HTTP::Response';

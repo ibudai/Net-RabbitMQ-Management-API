@@ -35,7 +35,7 @@ B<Note:> This library has been tested against the RabbitMQ Management Plugin ver
 =head1 DOCUMENTATION
 
 The documentation has been taken directly from
-L<RabbitMQ|http://hg.rabbitmq.com/rabbitmq-management/raw-file/rabbitmq_v2_6_1/priv/www/api/index.html>
+L<RabbitMQ|http://hg.rabbitmq.com/rabbitmq-management/raw-file/rabbitmq_v2_6_1/priv/www/api/index.html>.
 Please also read the documentation there, since it might be more complete.
 
 =cut
@@ -1895,7 +1895,7 @@ sub delete_user_vhost_permissions {
     );
 }
 
-=method get_vhost_aliveness_test
+=method vhost_aliveness_test
 
 Declares a test queue, then publishes and consumes a message.
 This method accepts the following parameters:
@@ -1909,11 +1909,11 @@ B<vhost>: mandatory string, name of the vhost
 =back
 
     my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
-    my $result = $a->get_vhost_aliveness_test( vhost => '%2f' );
+    my $result = $a->vhost_aliveness_test( vhost => '%2f' );
 
 =cut
 
-sub get_vhost_aliveness_test {
+sub vhost_aliveness_test {
     my ( $self, %args ) = @_;
     croak 'Missing key in parameters: vhost' unless $args{vhost};
 
