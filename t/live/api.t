@@ -281,21 +281,21 @@ SKIP: {
 SKIP: {
     skip 'Set TEST_LIVE to true to run these tests', 1 unless $ENV{TEST_LIVE};
 
-    throws_ok { $a->publish_message } qr{Missing key in parameters: name}, 'Missing parameter name';
-    throws_ok { $a->publish_message( name => 'foo' ) } qr{Missing key in parameters: vhost}, 'Missing parameter vhost';
-    throws_ok { $a->publish_message( name => 'foo', vhost => 'bar' ) } qr{Missing key in parameters: properties}, 'Missing parameter properties';
-    throws_ok { $a->publish_message( name => 'foo', vhost => 'bar', properties => 'properties' ) } qr{Missing key in parameters: routing_key},
+    throws_ok { $a->publish_exchange_message } qr{Missing key in parameters: name}, 'Missing parameter name';
+    throws_ok { $a->publish_exchange_message( name => 'foo' ) } qr{Missing key in parameters: vhost}, 'Missing parameter vhost';
+    throws_ok { $a->publish_exchange_message( name => 'foo', vhost => 'bar' ) } qr{Missing key in parameters: properties}, 'Missing parameter properties';
+    throws_ok { $a->publish_exchange_message( name => 'foo', vhost => 'bar', properties => 'properties' ) } qr{Missing key in parameters: routing_key},
       'Missing parameter routing_key';
-    throws_ok { $a->publish_message( name => 'foo', vhost => 'bar', properties => 'properties', routing_key => 'routing_key' ) }
+    throws_ok { $a->publish_exchange_message( name => 'foo', vhost => 'bar', properties => 'properties', routing_key => 'routing_key' ) }
     qr{Missing key in parameters: payload}, 'Missing parameter payload';
-    throws_ok { $a->publish_message( name => 'foo', vhost => 'bar', properties => 'properties', routing_key => 'routing_key', payload => 'payload' ) }
+    throws_ok { $a->publish_exchange_message( name => 'foo', vhost => 'bar', properties => 'properties', routing_key => 'routing_key', payload => 'payload' ) }
     qr{Missing key in parameters: payload_encoding}, 'Missing parameter payload_encoding';
 }
 
 SKIP: {
     skip 'Set TEST_LIVE to true to run these tests', 1 unless $ENV{TEST_LIVE};
 
-    my $r = $a->publish_message(
+    my $r = $a->publish_exchange_message(
         vhost            => '%2f',
         name             => 'bar19',
         properties       => {},
@@ -524,10 +524,6 @@ SKIP: {
     throws_ok { $a->create_bindings_between_exchange_and_queue( vhost => 'foo' ) } qr{Missing key in parameters: exchange}, 'Missing parameter exchange';
     throws_ok { $a->create_bindings_between_exchange_and_queue( vhost => 'foo', exchange => 'exchange' ) } qr{Missing key in parameters: queue},
       'Missing parameter queue';
-    throws_ok { $a->create_bindings_between_exchange_and_queue( vhost => 'foo', exchange => 'exchange', queue => 'queue' ) }
-    qr{Missing key in parameters: routing_key}, 'Missing parameter routing_key';
-    throws_ok { $a->create_bindings_between_exchange_and_queue( vhost => 'foo', exchange => 'exchange', queue => 'queue', routing_key => 'routing_key' ) }
-    qr{Missing key in parameters: arguments}, 'Missing parameter arguments';
 }
 
 SKIP: {
@@ -541,7 +537,6 @@ SKIP: {
         exchange    => 'bar19',
         queue       => 'bar123',
         routing_key => 'my_routing_key',
-        arguments   => []
     );
 
     is $r->success, 1, 'Succesfully created a binding between exchange and queue';
@@ -705,10 +700,11 @@ SKIP: {
     skip 'Set TEST_LIVE to true to run these tests', 1 unless $ENV{TEST_LIVE};
 
     throws_ok { $a->create_user } qr{Missing key in parameters: name}, 'Missing parameter name';
-    throws_ok { $a->create_user( name => 'foo' ) } qr{Missing key in parameters: password or password_hash}, 'Missing parameter password or password_hash';
+    throws_ok { $a->create_user ( name => 'foo' ) } qr{Missing key in parameters: tags}, 'Missing parameter tags';
+    throws_ok { $a->create_user( name => 'foo', tags => 'administrator' ) } qr{Missing key in parameters: password or password_hash}, 'Missing parameter password or password_hash';
 
-    lives_ok { $a->create_user( name => 'foo', password => 'password' ) } 'Correct parameters do not throw an exception';
-    lives_ok { $a->create_user( name => 'foo', password_hash => 'password_hash' ) } 'Correct parameters do not throw an exception';
+    lives_ok { $a->create_user( name => 'foo', tags => 'administrator', password => 'password' ) } 'Correct parameters do not throw an exception';
+    lives_ok { $a->create_user( name => 'foo', tags => 'administrator', password_hash => 'password_hash' ) } 'Correct parameters do not throw an exception'
 }
 
 SKIP: {
