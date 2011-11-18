@@ -1,5 +1,7 @@
 package Net::RabbitMQ::Management::API::Result;
 
+# ABSTRACT: RabbitMQ Management API result object
+
 use Moo;
 
 use JSON::Any;
