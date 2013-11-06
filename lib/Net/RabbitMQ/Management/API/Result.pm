@@ -4,7 +4,7 @@ package Net::RabbitMQ::Management::API::Result;
 
 use Moo;
 
-use JSON::Any;
+use JSON qw(decode_json);
 
 =attr response
 
@@ -38,23 +38,10 @@ has 'content' => (
     lazy    => 1,
 );
 
-has '_json' => (
-    builder => '_build__json',
-    is      => 'ro',
-    isa     => sub { die 'must be a JSON::Any, but is ' . ref $_[0] unless ref $_[0] eq 'JSON::Any' },
-    lazy    => 1,
-);
-
-
-sub _build__json {
-    my ($self) = @_;
-    return JSON::Any->new;
-}
-
 sub _build_content {
     my ($self) = @_;
     if ( $self->raw_content ) {
-        return $self->_json->decode( $self->raw_content );
+        return decode_json( $self->raw_content );
     }
     return {};
 }

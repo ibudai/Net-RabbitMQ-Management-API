@@ -7,7 +7,7 @@ use Moo;
 use Carp qw(croak);
 use HTTP::Headers;
 use HTTP::Request;
-use JSON::Any;
+use JSON qw(encode_json);
 use LWP::UserAgent;
 use Net::RabbitMQ::Management::API::Result;
 use URI;
@@ -94,12 +94,6 @@ has 'url' => (
     },
 );
 
-has '_json' => (
-    builder => '_build__json',
-    is      => 'ro',
-    lazy    => 1,
-);
-
 =method request
 
 All L<Net::RabbitMQ::Management::API> calls are using this method
@@ -144,7 +138,7 @@ API call.
 =item *
 
 B<data>: optional data reference, usually a reference to an array
-or hash. It must be possible to serialize this using L<JSON::Any>.
+or hash. It must be possible to serialize this using L<JSON>.
 This will be the HTTP request body.
 
 
@@ -208,8 +202,7 @@ sub _request_for {
     $request->authorization_basic( $self->username, $self->password );
 
     if ($data) {
-        my $json = $self->_json->encode($data);
-        $request->content($json);
+        $request->content(encode_json($data));
     }
 
     $request->header( 'Content-Length' => length $request->content );
@@ -226,11 +219,6 @@ sub _uri_for {
     $uri->path( $uri->path . $path );
 
     return $uri;
-}
-
-sub _build__json {
-    my ($self) = @_;
-    return JSON::Any->new;
 }
 
 sub _build_ua {
