@@ -8,7 +8,7 @@ BEGIN {
     use_ok('Net::RabbitMQ::Management::API::Result');
 }
 
-my $a = Net::RabbitMQ::Management::API->new( url => $ENV{TEST_URI} || 'http://localhost:55672/api' );
+my $a = Net::RabbitMQ::Management::API->new( url => $ENV{TEST_URI} || 'http://localhost:15672/api' );
 
 SKIP: {
     skip 'Set TEST_LIVE to true to run these tests', 1 unless $ENV{TEST_LIVE};

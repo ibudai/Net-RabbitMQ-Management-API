@@ -25,7 +25,7 @@ B<Note:> This library has been tested against the RabbitMQ Management Plugin ver
     use Net::RabbitMQ::Management::API;
     use Data::Dumper;
 
-    my $a = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_overview;
 
     # $result->content is either an arrayref or an hashref
@@ -161,7 +161,7 @@ from the RabbitMQ API. Here are some examples of how to use it:
 
 Same as L<Net::RabbitMQ::Management::API/get_overview>:
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->request(
         method => 'GET',
         path   => '/overview',
@@ -171,7 +171,7 @@ Same as L<Net::RabbitMQ::Management::API/get_overview>:
 
 Same as L<Net::RabbitMQ::Management::API/get_configuration>:
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->request(
         method => 'GET',
         path   => '/all-configuration',
@@ -243,7 +243,7 @@ sub _build_ua {
 Get various random bits of information that describe the whole system.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_overview;
 
 =cut
@@ -262,7 +262,7 @@ sub get_overview {
 Get a list of nodes in the RabbitMQ cluster.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_nodes;
 
 =cut
@@ -289,7 +289,7 @@ B<name>: mandatory string, name of the node
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_node( name => 'foo' );
 
 =cut
@@ -309,7 +309,7 @@ sub get_node {
 Get a list of extensions to the management plugin.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_extensions;
 
 =cut
@@ -328,7 +328,7 @@ sub get_extensions {
 Get the server configuration.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_configuration;
 
 =cut
@@ -375,7 +375,7 @@ B<bindings>: mandatory arrayref of hashrefs, list of bindings
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->update_configuration(
         vhosts   => [ { 'name' => '/' } ],
         bindings => [
@@ -455,7 +455,7 @@ sub update_configuration {
 Get a list of all open connections.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_connections;
 
 =cut
@@ -482,7 +482,7 @@ B<name>: mandatory string, name of the connection
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_connection( name => 'foo' );
 
 =cut
@@ -510,7 +510,7 @@ B<name>: mandatory string, name of the connection
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->delete_connection( name => 'foo' );
 
 =cut
@@ -530,7 +530,7 @@ sub delete_connection {
 Get a list of all open channels.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_channels;
 
 =cut
@@ -557,7 +557,7 @@ B<name>: mandatory string, name of the channel
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_channel( name => 'foo' );
 
 =cut
@@ -577,7 +577,7 @@ sub get_channel {
 Get a list of all exchanges.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_exchanges;
 
 =cut
@@ -604,7 +604,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_exchanges_in_vhost( vhost => '%2f' );
 
 =cut
@@ -636,7 +636,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_exchange( name => 'bar', vhost => '%2f' );
 
 =cut
@@ -685,7 +685,7 @@ B<internal>: optional boolean
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->create_exchange(
         vhost       => '%2f',
         name        => 'bar',
@@ -727,7 +727,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->delete_exchange( name => 'bar', vhost => '%2f' );
 
 =cut
@@ -760,7 +760,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_exchange_bindings_by_source( name => 'bar', vhost => '%2f' );
 
 =cut
@@ -793,7 +793,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_exchange_bindings_by_destination( name => 'bar', vhost => '%2f' );
 
 =cut
@@ -842,7 +842,7 @@ B<properties>: mandatory hashref
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->publish_exchange_message(
         vhost            => '%2f',
         name             => 'foo',
@@ -875,7 +875,7 @@ sub publish_exchange_message {
 Get a list of all queues.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_queues;
 
 =cut
@@ -902,7 +902,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_queues_in_vhost( vhost => '%2f' );
 
 =cut
@@ -934,7 +934,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_queue( name => 'foo', vhost => '%2f' );
 
 =cut
@@ -979,7 +979,7 @@ B<node>: optional string
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->create_queue(
         name        => 'foo',
         vhost       => '%2f',
@@ -1019,7 +1019,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->delete_queue( name => 'foo', vhost => '%2f' );
 
 =cut
@@ -1052,7 +1052,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_queue_bindings( name => 'foo', vhost => '%2f' );
 
 =cut
@@ -1085,7 +1085,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->delete_queue_contents( name => 'foo', vhost => '%2f' );
 
 =cut
@@ -1146,7 +1146,7 @@ B<truncate>: optional integer, if present, will truncate the message payload if 
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_queue_messages(
         name     => 'foo',
         vhost    => '%2f',
@@ -1178,7 +1178,7 @@ sub get_queue_messages {
 Get a list of all bindings.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_bindings;
 
 =cut
@@ -1205,7 +1205,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_bindings_in_vhost( vhost => '%2f' );
 
 =cut
@@ -1241,7 +1241,7 @@ B<queue>: mandatory string, name of the queue
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_bindings_between_exchange_and_queue( vhost => '%2f', exchange => 'foo', queue => 'bar' );
 
 =cut
@@ -1283,7 +1283,7 @@ B<routing_key>: optional string
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->create_bindings_between_exchange_and_queue(
         vhost       => '%2f',
         exchange    => 'foo',
@@ -1331,7 +1331,7 @@ B<name>: mandatory string, name of the binding
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_binding(
         vhost    => '%2f',
         exchange => 'bar',
@@ -1379,7 +1379,7 @@ B<name>: mandatory string, name of the binding
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->create_binding(
         vhost    => '%2f',
         exchange => 'bar',
@@ -1427,7 +1427,7 @@ B<name>: mandatory string, name of the binding
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->delete_binding(
         vhost    => '%2f',
         exchange => 'bar',
@@ -1455,7 +1455,7 @@ sub delete_binding {
 Get a list of all vhosts.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_vhosts;
 
 =cut
@@ -1482,7 +1482,7 @@ B<name>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_vhost( name => 'foo' );
 
 =cut
@@ -1510,7 +1510,7 @@ B<name>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->create_vhost( name => 'foo' );
 
 =cut
@@ -1538,7 +1538,7 @@ B<name>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->delete_vhost( name => 'foo' );
 
 =cut
@@ -1566,7 +1566,7 @@ B<name>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_vhost_permissions( name => 'foo' );
 
 =cut
@@ -1586,7 +1586,7 @@ sub get_vhost_permissions {
 Get a list of all users.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_users;
 
 =cut
@@ -1613,7 +1613,7 @@ B<name>: mandatory string, name of the user
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_user( name => 'name' );
 
 =cut
@@ -1655,7 +1655,7 @@ B<password_hash>: mandatory string
 
 B<Either password or password_hash must be set.>
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->create_user(
         name          => 'name',
         password_hash => 'ISsWSv7CvZZts2lfN+TJPvUkSdo=',
@@ -1690,7 +1690,7 @@ B<name>: mandatory string, name of the user
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->delete_user( name => 'name' );
 
 =cut
@@ -1718,7 +1718,7 @@ B<name>: mandatory string, name of the user
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_user_permissions( name => 'name' );
 
 =cut
@@ -1738,7 +1738,7 @@ sub get_user_permissions {
 Get details of the currently authenticated user.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_user_details;
 
 =cut
@@ -1757,7 +1757,7 @@ sub get_user_details {
 Get a list of all permissions for all users.
 This method does not require any parameters.
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_users_permissions;
 
 =cut
@@ -1788,7 +1788,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->get_user_vhost_permissions( name => 'name', vhost => '%2f' );
 
 =cut
@@ -1833,7 +1833,7 @@ B<configure>: mandatory string
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->create_user_vhost_permissions(
         vhost     => '%2f',
         name      => 'name',
@@ -1876,7 +1876,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->delete_user_vhost_permissions(
         vhost     => '%2f',
         name      => 'name',
@@ -1908,7 +1908,7 @@ B<vhost>: mandatory string, name of the vhost
 
 =back
 
-    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:55672/api' );
+    my $a      = Net::RabbitMQ::Management::API->new( url => 'http://localhost:15672/api' );
     my $result = $a->vhost_aliveness_test( vhost => '%2f' );
 
 =cut

@@ -9,7 +9,7 @@ sub create {
     my ( $self, $class, %args ) = @_;
     return $class->new(
         ua  => Net::RabbitMQ::Test::UA->new,
-        url => $ENV{TEST_URI} || 'http://localhost:55672/api',
+        url => $ENV{TEST_URI} || 'http://localhost:15672/api',
         %args
     );
 }
