@@ -11,6 +11,7 @@ use JSON::Any;
 use LWP::UserAgent;
 use Net::RabbitMQ::Management::API::Result;
 use URI;
+use URI::Escape;
 
 =head1 DESCRIPTION
 
@@ -92,6 +93,18 @@ has 'url' => (
         my ( $self, $uri ) = @_;
         $self->{url} = URI->new("$uri");
     },
+);
+
+=attr auto_escape
+
+Whether arguments are automatically URI-escaped. Defaults to a false value.
+If not set to a true value, you need to URI-escape arguments to the remote
+methods yourself.
+
+=cut
+
+has 'auto_escape' => (
+    is      => 'rw',
 );
 
 has '_json' => (
@@ -238,6 +251,22 @@ sub _build_ua {
     return LWP::UserAgent->new;
 }
 
+sub _auto_escape {
+    my ($self, @parts) = @_;
+
+    if ($self->auto_escape) {
+        return map uri_escape($_), @parts;
+    }
+    else {
+        return @parts;
+    }
+}
+
+sub _url {
+    my ($self, $format, @parts) = @_;
+    return sprintf $format, $self->_auto_escape(@parts);
+}
+
 =method get_overview
 
 Get various random bits of information that describe the whole system.
@@ -300,7 +329,7 @@ sub get_node {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/nodes/%s/', $args{name} ),
+        path   => $self->_url( '/nodes/%s/', $self->_escape( $args{name} ) ),
     );
 }
 
@@ -493,7 +522,7 @@ sub get_connection {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/connections/%s', $args{name} ),
+        path   => $self->_url( '/connections/%s', $args{name} ),
     );
 }
 
@@ -521,7 +550,7 @@ sub delete_connection {
 
     return $self->request(
         method => 'DELETE',
-        path   => sprintf( '/connections/%s', $args{name} ),
+        path   => $self->_url( '/connections/%s', $args{name} ),
     );
 }
 
@@ -568,7 +597,7 @@ sub get_channel {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/channels/%s', $args{name} ),
+        path   => $self->_url( '/channels/%s', $args{name} ),
     );
 }
 
@@ -615,7 +644,7 @@ sub get_exchanges_in_vhost {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/exchanges/%s', $args{vhost} ),
+        path   => $self->_url( '/exchanges/%s', $args{vhost} ),
     );
 }
 
@@ -648,7 +677,7 @@ sub get_exchange {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/exchanges/%s/%s', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/exchanges/%s/%s', $args{vhost}, $args{name} ),
     );
 }
 
@@ -705,7 +734,7 @@ sub create_exchange {
 
     return $self->request(
         method => 'PUT',
-        path   => sprintf( '/exchanges/%s/%s', delete $args{vhost}, delete $args{name} ),
+        path   => $self->_url( '/exchanges/%s/%s', delete $args{vhost}, delete $args{name} ),
         data   => \%args,
     );
 }
@@ -739,7 +768,7 @@ sub delete_exchange {
 
     return $self->request(
         method => 'DELETE',
-        path   => sprintf( '/exchanges/%s/%s', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/exchanges/%s/%s', $args{vhost}, $args{name} ),
     );
 }
 
@@ -772,7 +801,7 @@ sub get_exchange_bindings_by_source {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/exchanges/%s/%s/bindings/source', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/exchanges/%s/%s/bindings/source', $args{vhost}, $args{name} ),
     );
 }
 
@@ -805,7 +834,7 @@ sub get_exchange_bindings_by_destination {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/exchanges/%s/%s/bindings/destination', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/exchanges/%s/%s/bindings/destination', $args{vhost}, $args{name} ),
     );
 }
 
@@ -865,7 +894,7 @@ sub publish_exchange_message {
 
     return $self->request(
         method => 'POST',
-        path   => sprintf( '/exchanges/%s/%s/publish', delete $args{vhost}, delete $args{name} ),
+        path   => $self->_url( '/exchanges/%s/%s/publish', delete $args{vhost}, delete $args{name} ),
         data   => \%args,
     );
 }
@@ -913,7 +942,7 @@ sub get_queues_in_vhost {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/queues/%s', $args{vhost} ),
+        path   => $self->_url( '/queues/%s', $args{vhost} ),
     );
 }
 
@@ -946,7 +975,7 @@ sub get_queue {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/queues/%s/%s', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/queues/%s/%s', $args{vhost}, $args{name} ),
     );
 }
 
@@ -997,7 +1026,7 @@ sub create_queue {
 
     return $self->request(
         method => 'PUT',
-        path   => sprintf( '/queues/%s/%s', delete $args{vhost}, delete $args{name} ),
+        path   => $self->_url( '/queues/%s/%s', delete $args{vhost}, delete $args{name} ),
         data   => \%args,
     );
 }
@@ -1031,7 +1060,7 @@ sub delete_queue {
 
     return $self->request(
         method => 'DELETE',
-        path   => sprintf( '/queues/%s/%s', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/queues/%s/%s', $args{vhost}, $args{name} ),
     );
 }
 
@@ -1064,7 +1093,7 @@ sub get_queue_bindings {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/queues/%s/%s/bindings', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/queues/%s/%s/bindings', $args{vhost}, $args{name} ),
     );
 }
 
@@ -1097,7 +1126,7 @@ sub delete_queue_contents {
 
     return $self->request(
         method => 'DELETE',
-        path   => sprintf( '/queues/%s/%s/contents', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/queues/%s/%s/contents', $args{vhost}, $args{name} ),
     );
 }
 
@@ -1168,7 +1197,7 @@ sub get_queue_messages {
 
     return $self->request(
         method => 'POST',
-        path   => sprintf( '/queues/%s/%s/get', delete $args{vhost}, delete $args{name} ),
+        path   => $self->_url( '/queues/%s/%s/get', delete $args{vhost}, delete $args{name} ),
         data   => \%args,
     );
 }
@@ -1216,7 +1245,7 @@ sub get_bindings_in_vhost {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/bindings/%s', $args{vhost} ),
+        path   => $self->_url( '/bindings/%s', $args{vhost} ),
     );
 }
 
@@ -1254,7 +1283,7 @@ sub get_bindings_between_exchange_and_queue {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/bindings/%s/e/%s/q/%s', $args{vhost}, $args{exchange}, $args{queue} ),
+        path   => $self->_url( '/bindings/%s/e/%s/q/%s', $args{vhost}, $args{exchange}, $args{queue} ),
     );
 }
 
@@ -1301,7 +1330,7 @@ sub create_bindings_between_exchange_and_queue {
 
     return $self->request(
         method => 'POST',
-        path   => sprintf( '/bindings/%s/e/%s/q/%s', delete $args{vhost}, delete $args{exchange}, delete $args{queue} ),
+        path   => $self->_url( '/bindings/%s/e/%s/q/%s', delete $args{vhost}, delete $args{exchange}, delete $args{queue} ),
         data   => \%args,
     );
 }
@@ -1350,7 +1379,7 @@ sub get_binding {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/bindings/%s/e/%s/q/%s/%s', $args{vhost}, $args{exchange}, $args{queue}, $args{name} ),
+        path   => $self->_url( '/bindings/%s/e/%s/q/%s/%s', $args{vhost}, $args{exchange}, $args{queue}, $args{name} ),
     );
 }
 
@@ -1398,7 +1427,7 @@ sub create_binding {
 
     return $self->request(
         method => 'PUT',
-        path   => sprintf( '/bindings/%s/e/%s/q/%s/%s', $args{vhost}, $args{exchange}, $args{queue}, $args{name} ),
+        path   => $self->_url( '/bindings/%s/e/%s/q/%s/%s', $args{vhost}, $args{exchange}, $args{queue}, $args{name} ),
     );
 }
 
@@ -1446,7 +1475,7 @@ sub delete_binding {
 
     return $self->request(
         method => 'DELETE',
-        path   => sprintf( '/bindings/%s/e/%s/q/%s/%s', $args{vhost}, $args{exchange}, $args{queue}, $args{name} ),
+        path   => $self->_url( '/bindings/%s/e/%s/q/%s/%s', $args{vhost}, $args{exchange}, $args{queue}, $args{name} ),
     );
 }
 
@@ -1493,7 +1522,7 @@ sub get_vhost {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/vhosts/%s', $args{name} ),
+        path   => $self->_url( '/vhosts/%s', $args{name} ),
     );
 }
 
@@ -1521,7 +1550,7 @@ sub create_vhost {
 
     return $self->request(
         method => 'PUT',
-        path   => sprintf( '/vhosts/%s', $args{name} ),
+        path   => $self->_url( '/vhosts/%s', $args{name} ),
     );
 }
 
@@ -1549,7 +1578,7 @@ sub delete_vhost {
 
     return $self->request(
         method => 'DELETE',
-        path   => sprintf( '/vhosts/%s', $args{name} ),
+        path   => $self->_url( '/vhosts/%s', $args{name} ),
     );
 }
 
@@ -1577,7 +1606,7 @@ sub get_vhost_permissions {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/vhosts/%s/permissions', $args{name} ),
+        path   => $self->_url( '/vhosts/%s/permissions', $args{name} ),
     );
 }
 
@@ -1624,7 +1653,7 @@ sub get_user {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/users/%s', $args{name} ),
+        path   => $self->_url( '/users/%s', $args{name} ),
     );
 }
 
@@ -1672,7 +1701,7 @@ sub create_user {
 
     return $self->request(
         method => 'PUT',
-        path   => sprintf( '/users/%s', delete $args{name} ),
+        path   => $self->_url( '/users/%s', delete $args{name} ),
         data   => \%args,
     );
 }
@@ -1701,7 +1730,7 @@ sub delete_user {
 
     return $self->request(
         method => 'DELETE',
-        path   => sprintf( '/users/%s', $args{name} ),
+        path   => $self->_url( '/users/%s', $args{name} ),
     );
 }
 
@@ -1729,7 +1758,7 @@ sub get_user_permissions {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/users/%s/permissions', $args{name} ),
+        path   => $self->_url( '/users/%s/permissions', $args{name} ),
     );
 }
 
@@ -1800,7 +1829,7 @@ sub get_user_vhost_permissions {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/permissions/%s/%s', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/permissions/%s/%s', $args{vhost}, $args{name} ),
     );
 }
 
@@ -1854,7 +1883,7 @@ sub create_user_vhost_permissions {
 
     return $self->request(
         method => 'PUT',
-        path   => sprintf( '/permissions/%s/%s', delete $args{vhost}, delete $args{name} ),
+        path   => $self->_url( '/permissions/%s/%s', delete $args{vhost}, delete $args{name} ),
         data   => \%args,
     );
 }
@@ -1891,7 +1920,7 @@ sub delete_user_vhost_permissions {
 
     return $self->request(
         method => 'DELETE',
-        path   => sprintf( '/permissions/%s/%s', $args{vhost}, $args{name} ),
+        path   => $self->_url( '/permissions/%s/%s', $args{vhost}, $args{name} ),
     );
 }
 
@@ -1919,7 +1948,7 @@ sub vhost_aliveness_test {
 
     return $self->request(
         method => 'GET',
-        path   => sprintf( '/aliveness-test/%s', $args{vhost} ),
+        path   => $self->_url( '/aliveness-test/%s', $args{vhost} ),
     );
 }
 
