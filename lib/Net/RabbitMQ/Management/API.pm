@@ -1645,7 +1645,7 @@ B<tags>: mandatory string
 
 =item *
 
-B<password>: mandatory strings
+B<password>: mandatory string
 
 =item *
 
@@ -1667,7 +1667,7 @@ B<Either password or password_hash must be set.>
 sub create_user {
     my ( $self, %args ) = @_;
     croak 'Missing key in parameters: name' unless $args{name};
-    croak 'Missing key in parameters: tags' unless $args{tags};
+    croak 'Missing key in parameters: tags' unless defined $args{tags};
     croak 'Missing key in parameters: password or password_hash' unless $args{password} or $args{password_hash};
 
     return $self->request(
